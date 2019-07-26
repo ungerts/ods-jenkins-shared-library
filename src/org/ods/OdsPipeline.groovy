@@ -54,13 +54,7 @@ class OdsPipeline implements Serializable {
       msgBasedOn = " based on image '${context.image}'"
     }
     logger.info "***** Continuing on node '${context.podLabel}'${msgBasedOn} *****"
-    script.podTemplate(
-      label: context.podLabel,
-      cloud: 'openshift',
-      containers: context.podContainers,
-      volumes: context.podVolumes,
-      serviceAccount: context.podServiceAccount
-    ) {
+    script.podTemplate(label: context.podLabel, inheritFrom: 'jnlp-agent-maven') {
       script.node(context.podLabel) {
         try {
           setBitbucketBuildStatus('INPROGRESS')
